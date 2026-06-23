@@ -1,12 +1,9 @@
 from flask import Flask
-
+from blueprints.general import app as general
 
 app=Flask(__name__)
 
-
-@app.route('/')
-def Home():
-    return "<h1> hello world <h1/>"
+app.register_blueprint(general)
 
 
 
