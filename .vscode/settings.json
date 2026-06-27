@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "database.db",
+            "database": "${workspaceFolder:flask_web}/instance/database.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
