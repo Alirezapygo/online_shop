@@ -11,6 +11,7 @@
             <th>قیمت</th>
             <th>توضیحات</th>
             <th>فعال</th>
+            <th>ویرایش</th>
         </tr>
         {% for p in products %}
         <tr>
@@ -18,6 +19,7 @@
             <td>{{ p.price }}</td>
             <td>{{ p.description }}</td>
             <td>{{ "yes" if p.active == 1 else "no" }}</td>
+            <td><a href="/admin/dashboard/etit-product/{{ p.id }}">ویرایش</a></td>
         </tr>
         {% endfor %}    
     </table>
