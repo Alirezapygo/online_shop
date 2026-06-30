@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="fa">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>admiin login </title>
-</head>
+{% extends 'base.html' %}
+{% block header %}
+    <title>admin login </title>
+{% endblock %}
 <body>
+{% block body %}
     <h1>admin login </h1>
     <form action="#" method="post">
         <input type="text" name="username" placeholder="username"><br>
         <input type="password" name="password" placeholder="password"><br>
         <button>submit</button>
     </form>
+{% endblock %}
 </body>
-</html>
