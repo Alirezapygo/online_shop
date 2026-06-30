@@ -8,4 +8,6 @@ class Product(db.Model):
     name = Column(String(80), unique=True, nullable=False,index=True)
     price = Column(Integer, nullable=False,index=True)
     description = Column(String, nullable=False,index=True)
+    active = Column(String, nullable=False,index=True)
+    
    
