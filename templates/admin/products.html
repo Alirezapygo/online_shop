@@ -7,6 +7,7 @@
 
     <table>
         <tr>
+            <th>تصویر</th>
             <th>اسم</th>
             <th>قیمت</th>
             <th>توضیحات</th>
@@ -15,18 +16,20 @@
         </tr>
         {% for p in products %}
         <tr>
+            <td><img style="width: 20px;" src="/static/cover/{{ p.id }}.jpg"></td>
             <td>{{ p.name }}</td>
             <td>{{ p.price }}</td>
             <td>{{ p.description }}</td>
-            <td>{{ "yes" if p.active == 1 else "no" }}</td>
+            <td>{{ "✓ فعال" if p.active == "1" else "✗ غیرفعال" }}</td>
             <td><a href="/admin/dashboard/etit-product/{{ p.id }}">ویرایش</a></td>
         </tr>
         {% endfor %}    
     </table>
 
 
-    <form action="#" method="post">
+    <form action="#" method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <label>cover</label><input type="file" name="cover"><br>
         <input type="text" name="name" placeholder="نام محصول"><br>
         <input type="number" name="price" placeholder="قیمت محصول"><br>
         <textarea name="description" placeholder="توضیحات"></textarea><br>

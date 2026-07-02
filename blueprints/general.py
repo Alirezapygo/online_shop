@@ -4,8 +4,8 @@ app=Blueprint("general",__name__)
 
 @app.route('/')
 def main():
-    products=Product.query.filter(Product.active==1).all()
-    return render_template("main.html",products=products)
+    products = Product.query.filter(Product.active == 1).all()
+    return render_template("main.html", products=products) 
     
 @app.route('/product/<int:id>/<name>')
 def product(id,name):
