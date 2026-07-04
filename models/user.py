@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, String
 from extensions import *
+from flask_login import UserMixin
 
-class User(db.Model):
+class User(db.Model,UserMixin):
     __tablename__ = 'users'  
     
     id = Column(Integer, primary_key=True)

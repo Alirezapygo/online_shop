@@ -70,14 +70,16 @@ def edit_product(id):
         description=request.form.get('description',None)
         active = request.form.get('active', None)
         file=request.files.get('cover',None)
-        if active == None:      
-            product.active = 0
-        else:
-            product.active= 1
+
         product.nmae=name
         product.price=price
         product.description=description
 
+        if active == None:      
+            product.active = 0
+        else:
+            product.active= 1
+        
         db.session.commit()
 
         if file!=None:
