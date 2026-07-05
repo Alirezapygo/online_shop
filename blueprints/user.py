@@ -28,7 +28,7 @@ def login():
             db.session.add(user)
             db.session.commit()
             login_user(user)
-            return redirect('/user/dashboard')
+            return redirect(url_for('user.dashboard'))
         
 
         else:
@@ -39,9 +39,13 @@ def login():
 
             if  sha256_crypt.verify(password , user.password):
                 login_user(user)
-                return redirect('/user/dashboard')
+                return redirect(url_for('user.dashboard'))
             else:
                 flash('نام کاربری یا پسورد اشتباه است')
                 return redirect(url_for('user.login'))
             
         return "down"
+    
+@app.route('/user/dashboard',methods=['GET'])
+def dashboard():
+    return "dashboard page"
