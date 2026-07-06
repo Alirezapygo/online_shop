@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String , ForeignKey
 from extensions import *
 
 class Payment(db.Model):

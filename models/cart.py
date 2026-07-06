@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String , ForeignKey
 from extensions import *
+from sqlalchemy.orm import backref
 
 class Cart(db.Model):
     __tablename__ = 'carts'  
@@ -7,5 +8,5 @@ class Cart(db.Model):
     id = Column(Integer, primary_key=True)
     status = Column(String , default='pending')
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    user = db.relationship('User', backref='carts')     
+    user = db.relationship('User', backref= backref('carts',lazy='dynamic'))     
    
