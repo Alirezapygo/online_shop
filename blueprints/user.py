@@ -67,7 +67,7 @@ def add_to_cart():
     cart_item=cart.cart_items.filter(CartItem.product == product).first()
     if cart_item == None:
         item = CartItem(quantity = 1)
-        item.price = Product.price
+        item.price = product.price
         item.cart = cart
         item.product = product
         db.session.add(item)
@@ -82,7 +82,8 @@ def add_to_cart():
 @app.route('/cart',methods=['GET'])
 @login_required
 def cart():
-    return render_template('user/cart.html')
+    cart = current_user.carts.filter(Cart.status=='pending').first()
+    return render_template('user/cart.html', cart=cart)  
 
 @app.route('/user/dashboard',methods=['GET'])
 @login_required
