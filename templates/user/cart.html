@@ -3,10 +3,17 @@
     <title>سبد خرید کاربر  </title>
 {% endblock %}
 {% block body %}
-
-    {% for cart_item in (current_user.carts|selectattr('status','equalto','pending')|first).cart_items %}
-        {{ cart_item.product_id }} {{ cart_item.product.name }}
+    
+  {% set cart = current_user.carts|selectattr('status','equalto','pending')|list %}
+{% if cart|length > 0 %}
+    {% for cart_item in (cart|first).cart_items %}
+        {{ cart_item.product_id }} {{ cart_item.quantity }} {{ cart_item.product.name }}
+        <form action="/remove-from-cart" method="get">
+            <input type="hidden" name="id" value="{{ cart_item.id }}">
+            <input type="submit" value="حذف">
+        </form>
     {% endfor %}
+{% endif %}
     
 {% endblock %}
 
