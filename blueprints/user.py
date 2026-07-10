@@ -3,9 +3,12 @@ from models.user import User
 from models.cart import Cart
 from models.cart_item import CartItem
 from models.product import Product
+from models.payment import Payment
 from extensions import db
 from passlib.hash import sha256_crypt
 from flask_login import login_user,login_required,current_user
+import config
+import requests
 
 app=Blueprint("user",__name__)
 
@@ -84,6 +87,58 @@ def add_to_cart():
 def cart():
     cart = current_user.carts.filter(Cart.status=='pending').first()
     return render_template('user/cart.html', cart=cart)  
+
+
+@app.route('/payment',methods=['GET'])
+@login_required
+def payment():
+    cart = current_user.carts.filter(Cart.status=="pending").first()
+    r=requests.post('https://gateway.zibal.ir/v1/request',
+                    json={
+                        'merchant':'zibal',
+                        'amount':cart.total_price(),
+                        'description':'درگاه پرداخت',
+                        'callbackUrl':'http://localhost:5000/verify'
+                        })
+    track_id=r.json()['trackId']
+    payment_url = f'https://gateway.zibal.ir/start/{track_id}'
+    pay = Payment(price = cart.total_price(),track_id=track_id)
+    pay.cart = cart
+    db.session.add(pay)
+    db.session.commit()
+    return redirect(payment_url)
+    
+@app.route('/verify',methods=['GET'])
+@login_required
+def verify():
+    trackId = request.args.get('trackId')
+    pay = Payment.query.filter(Payment.track_id==trackId).first_or_404()
+    r=requests.post('https://gateway.zibal.ir/v1/verify',
+                    json={
+                        'merchant':'zibal',
+                        'trackId':trackId
+                        })
+    response_data = r.json()
+    if response_data.get('result') == 100:
+        transaction_id = response_data.get('trackId')
+        card_pan = response_data.get('cardNumber')
+        refid = response_data.get('refNumber')
+        pay.card_pan=card_pan
+        pay.transaction_id=transaction_id
+        pay.refid=refid
+        pay.status='success'
+        pay.cart.status= 'paid'
+        flash('پرداخت موفق آمیز بود')
+    else:
+         pay.status='failde'
+         flash('پرداخت نا موفق بود')
+
+    db.session.commit()
+
+    return redirect(url_for('user.dashboard'))
+
+
+
 
 @app.route('/user/dashboard',methods=['GET'])
 @login_required
