@@ -137,16 +137,6 @@ def verify():
 
     return redirect(url_for('user.dashboard'))
 
-
-
-
-@app.route('/user/dashboard',methods=['GET'])
-@login_required
-def dashboard():
-    return "dashboard page"
-
-
-
 @app.route('/remove-from-cart',methods=['GET'])
 @login_required
 def remove_from_cart():
@@ -159,3 +149,18 @@ def remove_from_cart():
         db.session.delete(cart_item)
     db.session.commit()
     return redirect(url_for('user.cart'))
+
+
+
+@app.route('/user/dashboard',methods=['GET'])
+@login_required
+def dashboard():
+    return render_template('user/dashboard.html')
+
+
+@app.route('/user/dashboard/order/<id>',methods=['GET'])
+@login_required
+def order(id):
+    cart=current_user.carts.filter(Cart.id==id).first_or_404()
+    return render_template('user/order.html',cart=cart)
+
