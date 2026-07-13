@@ -6,4 +6,10 @@
 {% block body %}
     <h1>dashbord</h1>
     <a href="/admin/dashboard/products">محصولات</a>
+<div>
+    {% for cart in carts %}
+        {{ cart.get_status_persian() }} {{ cart.user.phone }} <a href="{{ url_for('admin.order', id=cart.id) }}">اطلاعات بیشتر</a> <br>
+    {% endfor %}
+</div>
+
 {% endblock %}
